@@ -1,0 +1,61 @@
+import { useState } from "react";
+import { FormControl, FormGroup,InputLabel,Input,Typography,styled,Button } from "@mui/material";
+import { addUser } from "../apiCollection/api";
+import {useNavigate } from "react-router-dom";
+
+const Container=styled(FormGroup)`
+    width:50%;
+    margin:5% auto 0 auto;
+    & > div{
+        margin-top:20px;
+    }
+    
+    
+`
+
+const defaultvalue={
+    name:'',
+    email:'',
+    phone:''
+}
+
+const AddUser=()=>{
+
+    const [user,setUser]=useState({defaultvalue});
+
+    const navigate = useNavigate();
+
+    const onValueChange=(e)=>{
+        console.log(e.target.name,e.target.value)
+        setUser({...user,[e.target.name]:e.target.value})
+        console.log(user);
+    }
+
+    const addUserDetails=async()=>{
+        await addUser(user);
+        navigate('/');
+    }
+
+    return(
+        <Container>
+            <Typography variant="h4">Add Users</Typography>
+            <FormControl>
+                <InputLabel>Name</InputLabel>
+                <Input onChange={(e)=>onValueChange(e)} name='name' />
+            </FormControl>
+            <FormControl>
+                <InputLabel>Email</InputLabel>
+                <Input  onChange={(e)=>onValueChange(e)} name='email'/>
+            </FormControl>
+            <FormControl>
+                <InputLabel>Phone</InputLabel>
+                <Input onChange={(e)=>onValueChange(e)} name='phone' />
+            </FormControl>   
+            <FormControl>
+                <Button variant="contained" onClick={()=>addUserDetails()}>Add User</Button>
+            </FormControl>                    
+        </Container>
+    )
+}
+
+export default AddUser;
